@@ -1,14 +1,14 @@
-// Include gulp
+// INCLUIDE GULP
 var gulp = require('gulp');
 
-// Include Plugins
+// INCLUIDE PLUGINS
 var sass = require('gulp-sass');
 var concat = require('gulp-concat');
 var sourcemaps = require('gulp-sourcemaps');
 var autoprefixer = require('gulp-autoprefixer');
 var cssnano = require('gulp-cssnano');
 
-// Tasks sass
+// TASK SASS
 gulp.task('sass', function () {
 	return gulp.src(['./sass/main.scss'])
 		.pipe(sourcemaps.init())
@@ -29,10 +29,10 @@ gulp.task('sass', function () {
 		.pipe(gulp.dest('./'));
 });
 
-// Watch Files For Changes
+// WATCH FILES FOR CHANGES
 gulp.task('watch', function () {
 	gulp.watch('sass/*.scss', ['sass']);
 });
 
-// Execute
+// EXECUTE
 gulp.task('default', ['sass', 'watch']);
