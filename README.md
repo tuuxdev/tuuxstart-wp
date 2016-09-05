@@ -1,4 +1,4 @@
-### TUUXSTART-WP v1.0.0 ###
+### TUUXSTART-WP v1.2.0 ###
 
 Starter template for "localhost" development of WordPress/SASS theme with Gulp as task runner
 
@@ -10,7 +10,7 @@ Starter template for "localhost" development of WordPress/SASS theme with Gulp a
 
 #### INSTALL ####
 
-First, download the master zip from GitHub or clone the repository on your WordPress installation themes directory (*../wp-content/themes/*):
+First, download the master zip from GitHub or clone the repository on your WordPress installation themes directory `../wp-content/themes/`
 ````
 $ git clone https://github.com/tuuxdev/tuuxstart-wp.git
 ````
@@ -26,10 +26,11 @@ And run Gulp
 ````
 $ gulp
 ````
+#### TEMPLATE WORKFLOW ####
 
-`./sass/*` files compiles in `./style.css`
+- `./sass/*` files compiles in `./style.css`
 
-#### TEMPLATE WORKFLOW & ENVIRONMENT: ####
+#### TEMPLATE ENVIRONMENT: ####
 
 1. [Gulp](http://gulpjs.com/)
 2. [gulp-sass](https://www.npmjs.com/package/gulp-sass)
