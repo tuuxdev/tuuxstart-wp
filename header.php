@@ -2,6 +2,7 @@
 <html <?php language_attributes(); ?>>
 <head>
   <meta charset="<?php bloginfo('charset'); ?>" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <?php if (is_search()) { ?>
     <meta name="robots" content="noindex, nofollow" />
     <?php } ?>
