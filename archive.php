@@ -1,8 +1,8 @@
 <?php get_header(); ?>
-<?php if (have_posts()) : ?>
 
-<main id="archive" class="site-main" role="main">
-	<header>
+<main class="st-main" role="main">
+	<?php if (have_posts()) : ?>
+	<header class="archive-head">
 		<?php $post = $posts[0]; // Hack. Set $post so that the_date() works. ?>
 		<?php /* If this is a category archive */ if (is_category()) { ?>
 		<h1>Archive for the &#8216;
@@ -30,7 +30,8 @@
 	</header>
 
 	<?php while (have_posts()) : the_post(); ?>
-	<article class="archive-element" id="post-<?php the_ID(); ?>">
+	<article <?php post_class( 'archive-item' ); ?> id="post-
+		<?php the_ID(); ?>">
 		<header>
 			<h2>
 				<a href="<?php the_permalink() ?>">

@@ -44,7 +44,7 @@
 				<input type="text" name="url" id="url" value="<?php echo esc_attr($comment_author_url); ?>" size="22" tabindex="3" />
 				<label for="url">Website</label>
 			</div>
-			-->
+		-->
 		<?php endif; ?>
 		<!--<p>You can use these tags: <code><?php echo allowed_tags(); ?></code></p>-->
 		<div>

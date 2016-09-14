@@ -1,7 +1,7 @@
 <?php get_header(); ?>
-<main id="post-<?php the_ID(); ?>" class="site-main" role="main">
+<main class="st-main" role="main">
 	<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
-	<article class="single-inn">
+	<article <?php post_class('st-single'); ?> id="post-<?php the_ID(); ?>">
 		<header>
 			<h1>
 				<?php the_title(); ?>

@@ -134,7 +134,7 @@
 		
 		body.login div#login h1 a {
 			background: url(<?php bloginfo('template_url');
-			?>/images/mian-logo.svg) center center no-repeat;
+			?>/img/logo.svg) center center no-repeat;
 			background-size: auto 100%;
 			margin: 0 auto !important;
 			width: 100%;
