@@ -1,7 +1,7 @@
 <?php get_header(); ?>
 <main id="search" class="site-main" role="main">
 	<?php if (have_posts()) : ?>
-	<h1>Search Results</h1>
+	<h1>Search Results For "<?php echo esc_html( get_search_query( false ) ); ?>"</h1>
 	<?php while (have_posts()) : the_post(); ?>
 	<article class="search-element" id="post-<?php the_ID(); ?>">
 		<header>
@@ -21,7 +21,7 @@
 	<?php endwhile; ?>
 	<?php include (TEMPLATEPATH . '/inc/nav.php' ); ?>
 	<?php else : ?>
-	<h1>No posts found.</h1>
+	<h1>No posts found for "<?php echo esc_html( get_search_query( false ) ); ?>"</h1>
 	<?php endif; ?>
 	<?php get_sidebar(); ?>
 </main>
