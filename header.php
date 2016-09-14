@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
+
 <head>
-  <meta charset="<?php bloginfo('charset'); ?>" />
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <?php if (is_search()) { ?>
-    <meta name="robots" content="noindex, nofollow" />
-    <?php } ?>
-      <title>
-        <?php
+	<meta charset="<?php bloginfo('charset'); ?>" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>
+		<?php
 		      if (function_exists('is_tag') && is_tag()) {
 		         single_tag_title("Tag Archive for &quot;"); echo '&quot; - '; }
 		      elseif (is_archive()) {
@@ -25,35 +24,33 @@
 		      if ($paged>1) {
 		         echo ' - page '. $paged; }
 		   ?>
-      </title>
+	</title>
 
-      <link rel="stylesheet" href="<?php bloginfo('template_url'); ?>/css/font-awesome.min.css">
-      <link rel="stylesheet" href="<?php bloginfo('stylesheet_url'); ?>">
-      <link rel="stylesheet" href="<?php bloginfo('template_url'); ?>/css/custom.css">
-      <link rel="shortcut icon" href="/favicon.png">
-      <link rel="pingback" href="<?php bloginfo('pingback_url'); ?>">
+	<link rel="stylesheet" href="<?php bloginfo('template_url'); ?>/css/font-awesome.min.css">
+	<link rel="stylesheet" href="<?php bloginfo('stylesheet_url'); ?>">
+	<link rel="stylesheet" href="<?php bloginfo('template_url'); ?>/css/custom.css">
+	<link rel="shortcut icon" href="/favicon.png">
+	<link rel="pingback" href="<?php bloginfo('pingback_url'); ?>">
 
-      <?php if ( is_singular() ) wp_enqueue_script('comment-reply'); ?>
-      <?php wp_head(); ?>
+	<?php if ( is_singular() ) wp_enqueue_script('comment-reply'); ?>
+	<?php wp_head(); ?>
 </head>
 
 <body <?php body_class(); ?>>
-  <!--[if gte IE 6 ]>
+	<!--[if gte IE 6 ]>
     <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
   <![endif]-->
 
-  <header>
-    <div class="container">
-      <div class="row">
-        <div class="col-md-4">
-          <h1><a href="<?php echo get_option('home'); ?>/"><?php bloginfo('name'); ?></a></h1>
-          <P>
-            <?php bloginfo('description'); ?>
-          </P>
-        </div>
-        <div class="col-md-8">
-          <?php wp_nav_menu(array('menu' => 'main-nav', 'container' => false )); ?>
-        </div>
-      </div>
-    </div>
-  </header>
+	<header id="site-header">
+		<h1>
+			<a href="<?php echo get_option('home'); ?>/">
+				<?php bloginfo('name'); ?>
+			</a>
+		</h1>
+		<div>
+			<?php bloginfo('description'); ?>
+		</div>
+		<nav>
+			<?php wp_nav_menu(array('menu' => 'main-nav', 'container' => false )); ?>
+		</nav>
+	</header>
