@@ -1,4 +1,4 @@
-### TUUXSTART-WP v1.2.0 ###
+### TUUXSTART-WP v1.2.1 ###
 
 Starter template for "localhost" development of WordPress/SASS theme with Gulp as task runner
 

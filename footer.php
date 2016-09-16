@@ -1,7 +1,11 @@
-		<footer id="footer">
-			&copy;<?php echo date("Y"); echo " "; bloginfo('name'); ?>
-		</footer>
-	<?php wp_footer(); ?>
-	<!-- Don't forget analytics -->
+<footer id="st-footer">
+	<div class="copy">
+		&copy;
+		<?php echo date("Y"); echo " "; bloginfo('name'); ?>
+	</div>
+</footer>
+<?php wp_footer(); ?>
+<!-- Don't forget analytics -->
 </body>
+
 </html>

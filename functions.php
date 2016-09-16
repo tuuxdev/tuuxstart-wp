@@ -126,45 +126,46 @@
    ========================================================================== */
 
 	function my_login_logo() { ?>
-  <style type="text/css">
-    body.login div#login h1 {
-      background-color: #fff;
-      padding: 10px;
-    }
-    
-    body.login div#login h1 a {
-      background: url(<?php bloginfo('template_url');
-      ?>/images/mian-logo.svg) center center no-repeat;
-      background-size: auto 100%;
-      margin: 0 auto !important;
-      width: 100%;
-    }
-    
-    body.login div#login form#loginform p.submit input#wp-submit {
-      font-family: sans-serif;
-      display: block;
-      font-size: 1em;
-      line-height: 1em;
-      text-transform: uppercase;
-      color: #fff;
-      padding: 3px 10px;
-      border: none;
-      font-weight: normal;
-      cursor: pointer;
-      text-decoration: none!important;
-      background-color: #CC2730;
-      box-shadow: none!important;
-      -webkit-box-shadow: none!important;
-      -moz-box-shadow: none!important;
-      text-shadow: none!important;
-      transition: all .3s ease-in-out;
-    }
-    
-    body.login div#login form#loginform p.submit input#wp-submit:hover {
-      background-color: #333;
-    }
-  </style>
-  <?php }
+	<style type="text/css">
+		body.login div#login h1 {
+			background-color: #fff;
+			padding: 10px;
+		}
+		
+		body.login div#login h1 a {
+			background: url(<?php bloginfo('template_url');
+			?>/img/logo.svg) center center no-repeat;
+			background-size: auto 100%;
+			margin: 0 auto !important;
+			width: 100%;
+		}
+		
+		body.login div#login form#loginform p.submit input#wp-submit {
+			font-family: sans-serif;
+			display: block;
+			font-size: 1em;
+			line-height: 1em;
+			text-transform: uppercase;
+			color: #fff;
+			padding: 3px 10px;
+			border: none;
+			font-weight: normal;
+			cursor: pointer;
+			text-decoration: none!important;
+			background-color: #CC2730;
+			box-shadow: none!important;
+			-webkit-box-shadow: none!important;
+			-moz-box-shadow: none!important;
+			text-shadow: none!important;
+			transition: all .3s ease-in-out;
+		}
+		
+		body.login div#login form#loginform p.submit input#wp-submit:hover {
+			background-color: #333;
+		}
+
+	</style>
+	<?php }
 	add_action( 'login_enqueue_scripts', 'my_login_logo' ); 
 
 /* ==========================================================================
@@ -189,17 +190,35 @@
 			}
 			?>
 
-    <meta property="og:title" content="<?php echo the_title(); ?>" />
-    <meta property="og:description" content="<?php echo $excerpt; ?>" />
-    <meta property="og:type" content="article" />
-    <meta property="og:url" content="<?php echo the_permalink(); ?>" />
-    <meta property="og:site_name" content="<?php echo get_bloginfo(); ?>" />
-    <meta property="og:image" content="<?php echo $img_src; ?>" />
+	<meta property="og:title" content="<?php echo the_title(); ?>" />
+	<meta property="og:description" content="<?php echo $excerpt; ?>" />
+	<meta property="og:type" content="article" />
+	<meta property="og:url" content="<?php echo the_permalink(); ?>" />
+	<meta property="og:site_name" content="<?php echo get_bloginfo(); ?>" />
+	<meta property="og:image" content="<?php echo $img_src; ?>" />
 
-    <?php
+	<?php
 		} else {
 			return;
 		}
 	}
 	add_action('wp_head', 'fb_opengraph', 5);
+/* ==========================================================================
+   DESABLE EMOJIS
+   ========================================================================== */
+function disable_wp_emojicons() {
+
+  // all actions related to emojis
+  remove_action( 'admin_print_styles', 'print_emoji_styles' );
+  remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
+  remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
+  remove_action( 'wp_print_styles', 'print_emoji_styles' );
+  remove_filter( 'wp_mail', 'wp_staticize_emoji_for_email' );
+  remove_filter( 'the_content_feed', 'wp_staticize_emoji' );
+  remove_filter( 'comment_text_rss', 'wp_staticize_emoji' );
+
+  // filter to remove TinyMCE emojis
+  add_filter( 'tiny_mce_plugins', 'disable_emojicons_tinymce' );
+}
+add_action( 'init', 'disable_wp_emojicons' );
 ?>
