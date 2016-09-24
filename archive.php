@@ -53,7 +53,8 @@
 	<header>
 		<h1>Nothing found</h1>
 	</header>
+	<?php endif; ?>
 </main>
-<?php endif; ?>
+
 
 <?php get_footer(); ?>
