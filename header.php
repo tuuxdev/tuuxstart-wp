@@ -29,7 +29,7 @@
 	<link rel="stylesheet" href="<?php bloginfo('template_url'); ?>/css/font-awesome.min.css">
 	<link rel="stylesheet" href="<?php bloginfo('stylesheet_url'); ?>">
 	<link rel="stylesheet" href="<?php bloginfo('template_url'); ?>/css/custom.css">
-	<link rel="shortcut icon" href="/favicon.png">
+	<link rel="shortcut icon" href="<?php bloginfo('template_url'); ?>/favicon.png">
 	<link rel="pingback" href="<?php bloginfo('pingback_url'); ?>">
 
 	<?php if ( is_singular() ) wp_enqueue_script('comment-reply'); ?>
