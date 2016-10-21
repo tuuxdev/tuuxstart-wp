@@ -17,7 +17,7 @@ gulp.task('sass', function () {
 		.pipe(autoprefixer())
 		.pipe(concat('style.css'))
 		.pipe(sourcemaps.write('.'))
-		.pipe(gulp.dest('./'))
+		.pipe(gulp.dest('./'));
 });
 
 // WATCH FILES FOR CHANGES
