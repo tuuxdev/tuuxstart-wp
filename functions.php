@@ -1,14 +1,13 @@
 <?php
-/*  =========================================================================
-    RSS LINK <head>
-    ========================================================================== */
+/* =========================================================================
+ * RSS LINK <head>
+ * ====================================================================== */
 	
 	automatic_feed_links();
-	
-/*  =========================================================================
-    CLEAN UP <head>
-    ========================================================================== */
-	
+
+/* =========================================================================
+ * CLEAN UP <head>
+ * ====================================================================== */		
 	function removeHeadLinks() {
     	remove_action('wp_head', 'rsd_link');
     	remove_action('wp_head', 'wlwmanifest_link');
@@ -16,9 +15,23 @@
     add_action('init', 'removeHeadLinks');
     remove_action('wp_head', 'wp_generator');
 
-/*  =========================================================================
-    WIDGET ZONE
-    ========================================================================== */
+/* =========================================================================
+ * PLUGIN / STYLE ENQUEUE
+ * ====================================================================== */
+
+	function my_assets() {
+		wp_enqueue_style( 'fontawesome', get_template_directory_uri() . '/css/font-awesome.min.css', array() );
+		wp_enqueue_style( 'main-style', get_stylesheet_uri() );
+		wp_enqueue_style( 'custom-style', get_template_directory_uri() . '/css/custom.css', array(), '1.0.0' );
+		/*SCRIPTS*/
+		//wp_enqueue_script( 'jqury', get_template_directory_uri() . '/js/jquery-2.2.3.min.js', array(), '1.0.0' );
+		wp_enqueue_script( 'plugins', get_template_directory_uri() . '/js/plugins.js', array(), '1.0.0' );
+	}
+	add_action( 'wp_enqueue_scripts', 'my_assets' );
+
+/* =========================================================================
+ * WIDGET ZONE
+ * ====================================================================== */
 
     if (function_exists('register_sidebar')) {
     	register_sidebar(array(
@@ -32,26 +45,29 @@
     	));
     }
 
-/* ==========================================================================
-   MENU
-   ========================================================================== */
+/* =========================================================================
+ * Menus <?php wp_nav_menu(array('theme_location' => 'main_nav', 'container' => false )); ?>
+ * ====================================================================== */
 
-	register_nav_menus(
+	function register_my_menus() {
+	  register_nav_menus(
 		array(
-		'main_nav' => 'main-nav'
+		  'main_nav' => __( 'Main' ),
 		)
-	);
+	  );
+	}
+	add_action( 'init', 'register_my_menus' );
 
-/* ==========================================================================
-    FEATURE IMAGE
-    ========================================================================== */
+/* =========================================================================
+ * FEATURE IMAGE
+ * ====================================================================== */
 
 	if ( function_exists( 'add_theme_support' ) )
 	add_theme_support( 'post-thumbnails' );
 
-/* ==========================================================================
-   CUSTOM BODY CLASSES
-   ========================================================================== */
+/* =========================================================================
+ * CUSTOM BODY CLASSES
+ * ====================================================================== */
 
 	add_filter('body_class','add_category_to_single');
 	function add_category_to_single($classes) {
@@ -115,15 +131,15 @@
 		return $classes;
 	}
 
-/* ==========================================================================
-   SINGLE BY CATEGORY
-   ========================================================================== */
+/* =========================================================================
+ * SINGLE BY CATEGORY
+ * ====================================================================== */
 
 	add_filter('single_template', create_function('$t', 'foreach( (array) get_the_category() as $cat ) { if ( file_exists(TEMPLATEPATH . "/single-{$cat->term_id}.php") ) return TEMPLATEPATH . "/single-{$cat->term_id}.php"; elseif ( file_exists(TEMPLATEPATH . "/single-{$cat->slug}.php") ) return TEMPLATEPATH . "/single-{$cat->slug}.php"; } return $t;' ));
-			
-/* ==========================================================================
-   LOGIN PAGE LOGO
-   ========================================================================== */
+
+/* =========================================================================
+ * LOGIN PAGE STYLE
+ * ====================================================================== */
 
 	function my_login_logo() { ?>
 	<style type="text/css">
@@ -168,10 +184,10 @@
 	<?php }
 	add_action( 'login_enqueue_scripts', 'my_login_logo' ); 
 
-/* ==========================================================================
-   FACEBOOK META TAGS
-   ========================================================================== */
-	
+/* =========================================================================
+ * FACEBOOK META TAGS
+ * ====================================================================== */
+
 	function fb_opengraph() {
 		global $post;
 	 
@@ -203,19 +219,20 @@
 		}
 	}
 	add_action('wp_head', 'fb_opengraph', 5);
-/* ==========================================================================
-   DESABLE EMOJIS
-   ========================================================================== */
-function disable_wp_emojicons() {
 
-  // all actions related to emojis
-  remove_action( 'admin_print_styles', 'print_emoji_styles' );
-  remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
-  remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
-  remove_action( 'wp_print_styles', 'print_emoji_styles' );
-  remove_filter( 'wp_mail', 'wp_staticize_emoji_for_email' );
-  remove_filter( 'the_content_feed', 'wp_staticize_emoji' );
-  remove_filter( 'comment_text_rss', 'wp_staticize_emoji' );
-}
-add_action( 'init', 'disable_wp_emojicons' );
+/* =========================================================================
+ * DESABLE EMOJIS
+ * ====================================================================== */
+
+function disable_wp_emojicons() {
+	  // all actions related to emojis
+	  remove_action( 'admin_print_styles', 'print_emoji_styles' );
+	  remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
+	  remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
+	  remove_action( 'wp_print_styles', 'print_emoji_styles' );
+	  remove_filter( 'wp_mail', 'wp_staticize_emoji_for_email' );
+	  remove_filter( 'the_content_feed', 'wp_staticize_emoji' );
+	  remove_filter( 'comment_text_rss', 'wp_staticize_emoji' );
+	}
+	add_action( 'init', 'disable_wp_emojicons' );
 ?>
