@@ -21,7 +21,7 @@
 
 	function my_assets() {
 		wp_enqueue_style( 'fontawesome', get_template_directory_uri() . '/css/font-awesome.min.css', array() );
-		wp_enqueue_style( 'main-style', get_stylesheet_uri(), '1.0.0' );
+		wp_enqueue_style( 'main-style', get_stylesheet_uri() );
 		wp_enqueue_style( 'custom-style', get_template_directory_uri() . '/css/custom.css', array(), '1.0.0' );
 		/*SCRIPTS*/
 		//wp_enqueue_script( 'jqury', get_template_directory_uri() . '/js/jquery-2.2.3.min.js', array(), '1.0.0' );
