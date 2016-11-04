@@ -1,4 +1,23 @@
 <?php
+
+define('THEME_NAME', 'Custom Theme');
+define('THEME_VERSION', '1.0.0');
+
+/* =========================================================================
+* PLUGIN / STYLE ENQUEUE
+* ====================================================================== */
+
+	function my_assets() {
+		/*STYLES*/
+		wp_enqueue_style( 'fontawesome', get_template_directory_uri() . '/css/font-awesome.min.css', array());
+		wp_enqueue_style( 'main-style', get_stylesheet_uri(), array(), THEME_VERSION); 
+		wp_enqueue_style( 'custom-style', get_template_directory_uri() . '/css/custom.css', array(), THEME_VERSION );
+		/*SCRIPTS*/
+		//wp_enqueue_script( 'jquery-two', get_template_directory_uri() . '/js/jquery-2.2.3.min.js', array());
+		wp_enqueue_script( 'plugins', get_template_directory_uri() . '/js/plugins.js', array(), THEME_VERSION, true );
+	}
+	add_action( 'wp_enqueue_scripts', 'my_assets' );
+
 /* =========================================================================
  * RSS LINK <head>
  * ====================================================================== */
@@ -7,27 +26,14 @@
 
 /* =========================================================================
  * CLEAN UP <head>
- * ====================================================================== */		
+ * ====================================================================== */	
+
 	function removeHeadLinks() {
     	remove_action('wp_head', 'rsd_link');
     	remove_action('wp_head', 'wlwmanifest_link');
     }
     add_action('init', 'removeHeadLinks');
     remove_action('wp_head', 'wp_generator');
-
-/* =========================================================================
- * PLUGIN / STYLE ENQUEUE
- * ====================================================================== */
-
-	function my_assets() {
-		wp_enqueue_style( 'fontawesome', get_template_directory_uri() . '/css/font-awesome.min.css', array() );
-		wp_enqueue_style( 'main-style', get_stylesheet_uri() );
-		wp_enqueue_style( 'custom-style', get_template_directory_uri() . '/css/custom.css', array(), '1.0.0' );
-		/*SCRIPTS*/
-		//wp_enqueue_script( 'jqury', get_template_directory_uri() . '/js/jquery-2.2.3.min.js', array(), '1.0.0' );
-		wp_enqueue_script( 'plugins', get_template_directory_uri() . '/js/plugins.js', array(), '1.0.0' );
-	}
-	add_action( 'wp_enqueue_scripts', 'my_assets' );
 
 /* =========================================================================
  * WIDGET ZONE
@@ -67,172 +73,3 @@
 
 /* =========================================================================
  * CUSTOM BODY CLASSES
- * ====================================================================== */
-
-	add_filter('body_class','add_category_to_single');
-	function add_category_to_single($classes) {
-		$post_name_prefix = 'postname-';
-		$page_name_prefix = 'pagename-';
-		$single_term_prefix = 'category-';
-		$single_parent_prefix = 'category-';
-		$category_parent_prefix = 'category-';
-		$term_parent_prefix = 'parent-term-';
-		$site_prefix = 'site-';
-		
-		global $wp_query;
-		if ( is_single() ) {
-			$wp_query->post = $wp_query->posts[0];
-			setup_postdata($wp_query->post);
-			$classes[] = $post_name_prefix . $wp_query->post->post_name;
-	
-			$taxonomies = array_filter( get_post_taxonomies($wp_query->post->ID), "is_taxonomy_hierarchical" );	
-			foreach ( $taxonomies as $taxonomy ) {
-				$tax_name = ( $taxonomy != 'category') ? $taxonomy . '-' : '';
-				$terms = get_the_terms($wp_query->post->ID, $taxonomy);
-				if ( $terms ) {
-					foreach( $terms as $term ) {
-						if ( !empty($term->slug ) )
-							$classes[] = $single_term_prefix . $tax_name . sanitize_html_class($term->slug, $term->term_id);
-						while ( $term->parent ) {
-							$term = &get_term( (int) $term->parent, $taxonomy );
-							if ( !empty( $term->slug ) )
-								$classes[] = $single_parent_prefix . $tax_name . sanitize_html_class($term->slug, $term->term_id);
-						}
-					}
-				}
-			}
-		} elseif ( is_archive() ) {
-			if ( is_category() ) {
-				$cat = $wp_query->get_queried_object();
-				while ( $cat->parent ) {
-					$cat = &get_category( (int) $cat->parent);
-					if ( !empty( $cat->slug ) )
-						$classes[] = $category_parent_prefix . sanitize_html_class($cat->slug, $cat->cat_ID);
-				}
-			} elseif ( is_tax() ) {
-				$term = $wp_query->get_queried_object();
-				while ( $term->parent ) {
-					$term = &get_term( (int) $term->parent, $term->taxonomy );
-					if ( !empty( $term->slug ) )
-						$classes[] = $term_parent_prefix . sanitize_html_class($term->slug, $term->term_id);
-				}
-			}
-		} elseif ( is_page() ) {
-			$wp_query->post = $wp_query->posts[0];
-			setup_postdata($wp_query->post);
-			$classes[] = $page_name_prefix . $wp_query->post->post_name;
-		}
-		
-		if ( is_multisite() ) {
-			global $blog_id;
-			$classes[] = $site_prefix . $blog_id;
-		}
-		
-		return $classes;
-	}
-
-/* =========================================================================
- * SINGLE BY CATEGORY
- * ====================================================================== */
-
-	add_filter('single_template', create_function('$t', 'foreach( (array) get_the_category() as $cat ) { if ( file_exists(TEMPLATEPATH . "/single-{$cat->term_id}.php") ) return TEMPLATEPATH . "/single-{$cat->term_id}.php"; elseif ( file_exists(TEMPLATEPATH . "/single-{$cat->slug}.php") ) return TEMPLATEPATH . "/single-{$cat->slug}.php"; } return $t;' ));
-
-/* =========================================================================
- * LOGIN PAGE STYLE
- * ====================================================================== */
-
-	function my_login_logo() { ?>
-	<style type="text/css">
-		body.login div#login h1 {
-			background-color: #fff;
-			padding: 10px;
-		}
-		
-		body.login div#login h1 a {
-			background: url(<?php bloginfo('template_url');
-			?>/img/logo.svg) center center no-repeat;
-			background-size: auto 100%;
-			margin: 0 auto !important;
-			width: 100%;
-		}
-		
-		body.login div#login form#loginform p.submit input#wp-submit {
-			font-family: sans-serif;
-			display: block;
-			font-size: 1em;
-			line-height: 1em;
-			text-transform: uppercase;
-			color: #fff;
-			padding: 3px 10px;
-			border: none;
-			font-weight: normal;
-			cursor: pointer;
-			text-decoration: none!important;
-			background-color: #CC2730;
-			box-shadow: none!important;
-			-webkit-box-shadow: none!important;
-			-moz-box-shadow: none!important;
-			text-shadow: none!important;
-			transition: all .3s ease-in-out;
-		}
-		
-		body.login div#login form#loginform p.submit input#wp-submit:hover {
-			background-color: #333;
-		}
-
-	</style>
-	<?php }
-	add_action( 'login_enqueue_scripts', 'my_login_logo' ); 
-
-/* =========================================================================
- * FACEBOOK META TAGS
- * ====================================================================== */
-
-	function fb_opengraph() {
-		global $post;
-	 
-		if(is_single()) {
-			if(has_post_thumbnail($post->ID)) {
-				$img_src = wp_get_attachment_image_src(get_post_thumbnail_id( $post->ID ), 'medium');
-				$img_src = $img_src[0];//Solo si la imagen queda Array
-			} else {
-				$img_src = get_stylesheet_directory_uri() . '/images/no-thumbnail.jpg';
-			}
-			if($excerpt = $post->post_excerpt) {
-				$excerpt = strip_tags($post->post_excerpt);
-				$excerpt = str_replace("", "'", $excerpt);
-			} else {
-				$excerpt = get_bloginfo('description');
-			}
-			?>
-
-	<meta property="og:title" content="<?php echo the_title(); ?>" />
-	<meta property="og:description" content="<?php echo $excerpt; ?>" />
-	<meta property="og:type" content="article" />
-	<meta property="og:url" content="<?php echo the_permalink(); ?>" />
-	<meta property="og:site_name" content="<?php echo get_bloginfo(); ?>" />
-	<meta property="og:image" content="<?php echo $img_src; ?>" />
-
-	<?php
-		} else {
-			return;
-		}
-	}
-	add_action('wp_head', 'fb_opengraph', 5);
-
-/* =========================================================================
- * DESABLE EMOJIS
- * ====================================================================== */
-
-function disable_wp_emojicons() {
-	  // all actions related to emojis
-	  remove_action( 'admin_print_styles', 'print_emoji_styles' );
-	  remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
-	  remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
-	  remove_action( 'wp_print_styles', 'print_emoji_styles' );
-	  remove_filter( 'wp_mail', 'wp_staticize_emoji_for_email' );
-	  remove_filter( 'the_content_feed', 'wp_staticize_emoji' );
-	  remove_filter( 'comment_text_rss', 'wp_staticize_emoji' );
-	}
-	add_action( 'init', 'disable_wp_emojicons' );
-?>
